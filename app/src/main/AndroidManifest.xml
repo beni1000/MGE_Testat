@@ -16,6 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="ch.mge.calculator.activities.HistoryActivity">
+        </activity>
+        <activity android:name="ch.mge.calculator.activities.ExchangeActivity">
+        </activity>
+        <activity android:name="ch.mge.calculator.activities.PythagorasActivity">
+        </activity>
     </application>
 
 </manifest>

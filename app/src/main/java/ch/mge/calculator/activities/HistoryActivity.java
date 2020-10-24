@@ -1,5 +1,6 @@
 package ch.mge.calculator.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +16,7 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        this.setTitle("History");
     }
 
     @Override
@@ -29,16 +31,20 @@ public class HistoryActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_calculator:
-                //startSettings();
+                Intent calcIntent = new Intent(this, CalculatorActivity.class);
+                this.startActivity(calcIntent);
                 return true;
             case R.id.action_history:
-
+                Intent historyIntent = new Intent(this, HistoryActivity.class);
+                this.startActivity(historyIntent);
                 return true;
             case R.id.action_exchange:
-
+                Intent exchangeIntent = new Intent(this, ExchangeActivity.class);
+                this.startActivity(exchangeIntent);
                 return true;
             case R.id.action_pythagoras:
-
+                Intent pythagorasIntent = new Intent(this, PythagorasActivity.class);
+                this.startActivity(pythagorasIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
