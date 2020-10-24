@@ -20,4 +20,6 @@
     <string name="delete">\u232b</string>
     <string name="clear">C</string>
     <string name="lul">lul</string>
+    <string name="button_clear_history">Clear History</string>
+    <string name="btn_calc_cash">Calculate</string>
 </resources>

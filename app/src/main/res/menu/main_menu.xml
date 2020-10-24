@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_calculator"
+        app:showAsAction="never"
+        android:title="Calculator">
+    </item>
+    <item
+        android:id="@+id/action_history"
+        app:showAsAction="never"
+        android:title="History">
+    </item>
+    <item
+        android:id="@+id/action_exchange"
+        app:showAsAction="never"
+        android:title="Exchange rate">
+    </item>
+    <item
+        android:id="@+id/action_pythagoras"
+        app:showAsAction="never"
+        android:title="Pythagoras">
+    </item>
+</menu>
