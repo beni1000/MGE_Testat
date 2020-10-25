@@ -1,22 +1,58 @@
 package ch.mge.calculator.activities;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.calculator.R;
 
+import java.util.ArrayList;
+
+import ch.mge.calculator.model.DatabaseHelper;
+
 public class HistoryActivity extends AppCompatActivity {
+    DatabaseHelper dbHelper;
+    private ListView historyView;
+    private int deleteAllBtn = R.id.button_clear_history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         this.setTitle("History");
+        historyView = (ListView) findViewById(R.id.history_view);
+        dbHelper = new DatabaseHelper(this);
+        fillView();
+        setClearHistoryOnClickListener();
+    }
+    private void fillView(){
+        Cursor data = dbHelper.getAllData();
+        ArrayList<String> listData = new ArrayList<>();
+        while (data.moveToNext()){
+            listData.add(data.getString(1));
+        }
+        ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
+        historyView.setAdapter(adapter);
+    }
+
+    private void setClearHistoryOnClickListener() {
+        findViewById(deleteAllBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHelper.deleteAll();
+                recreate();
+            }
+        });
     }
 
     @Override

@@ -4,26 +4,32 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.calculator.R;
 
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
+import ch.mge.calculator.model.DatabaseHelper;
+
 public class CalculatorActivity extends AppCompatActivity {
 
+    private static final String TAG = "Info";
     private int[] numberBtns = {R.id.button_0, R.id.button_1, R.id.button_2, R.id.button_3, R.id.button_4, R.id.button_5, R.id.button_6, R.id.button_7, R.id.button_8, R.id.button_9};
     private int[] operatorBtns = {R.id.button_divide, R.id.button_multiply, R.id.button_minus, R.id.button_plus};
     private TextView outputScreen;
     private boolean lastNum;
-    private boolean lastDot;
+    private boolean lastPoint;
     private boolean errorState;
+    DatabaseHelper dbHelper;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,7 @@ public class CalculatorActivity extends AppCompatActivity {
         this.outputScreen = (TextView) findViewById(R.id.calc_output_screen);
         setNumberOnClickListener();
         setOperatorOnClickListener();
+        dbHelper = new DatabaseHelper(this);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,6 +72,22 @@ public class CalculatorActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public void AddData(String newEntry){
+        boolean insertData = dbHelper.addData(newEntry);
+        Log.d(TAG, "AddData: " + insertData);
+        /*if(insertData){
+            toastMessage("Insert success!");
+        } else {
+            toastMessage("Insert failed!");
+        }*/
+
+    }
+
+    private void toastMessage(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
     private void setNumberOnClickListener() {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -91,7 +114,7 @@ public class CalculatorActivity extends AppCompatActivity {
                     Button button = (Button) v;
                     outputScreen.append(button.getText());
                     lastNum = false;
-                    lastDot = false;
+                    lastPoint = false;
                 }
             }
         };
@@ -101,11 +124,11 @@ public class CalculatorActivity extends AppCompatActivity {
         findViewById(R.id.button_point).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (lastNum && !errorState && !lastDot) {
+                if (lastNum && !errorState && !lastPoint) {
                     Button button = (Button) v;
                     outputScreen.append(button.getText());
                     lastNum = false;
-                    lastDot = true;
+                    lastPoint = true;
                 }
             }
         });
@@ -116,7 +139,7 @@ public class CalculatorActivity extends AppCompatActivity {
                 outputScreen.setText("");
                 lastNum = false;
                 errorState = false;
-                lastDot = false;
+                lastPoint = false;
             }
         });
 
@@ -129,18 +152,18 @@ public class CalculatorActivity extends AppCompatActivity {
     }
     private void Equals(){
         if (lastNum && !errorState) {
-            // Read the expression
-            String txt = outputScreen.getText().toString();
-            // Create an Expression (A class from exp4j library)
-            Expression expression = new ExpressionBuilder(txt).build();
+            String term = outputScreen.getText().toString();
+            Expression expr = new ExpressionBuilder(term).build();
             try {
-                // Calculate the result and display
-                double result = expression.evaluate();
+                double result = expr.evaluate();
                 outputScreen.setText(Double.toString(result));
-                lastDot = true; // Result contains a dot
+                lastPoint = true;
+                String holeLine = term + "= " + result;
+                if(holeLine.length() != 0){
+                    AddData(holeLine);
+                }
             } catch (ArithmeticException ex) {
-                // Display an error message
-                outputScreen.setText("Error");
+                outputScreen.setText("ArithmeticException");
                 errorState = true;
                 lastNum = false;
             }
