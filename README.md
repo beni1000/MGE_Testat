@@ -12,11 +12,11 @@ Bei der App handelt es sich um einen Taschenrechner welcher folgende Features mi
 
 ## Punkte
 
-- Taschenrechner Screen (1 Punkt)
+- Taschenrechner Screen mit "exp4j" (2 Punkt)
 - History Screen (1 Punkt)
-- Speicherung der History (1 Punkt)
+- Speicherung der History (SQLite) (1 Punkt)
 - Währungsrechner Screen (1 Punkt)
-- Verwendung European Central Bank API (1 Punkt)
+- Verwendung exchangeratesapi (1 Punkt)
 - Pythagorasrechner Screen (1 Punkt)
 - Dark/Light Theme (1 Punkt)
 - App Widget (1 Punkt)
