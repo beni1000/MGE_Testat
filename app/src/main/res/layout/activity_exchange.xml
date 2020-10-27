@@ -9,31 +9,24 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <Spinner
-            android:id="@+id/spinner_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dropdown" />
-
         <EditText
             android:id="@+id/txt_cash_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:ems="20"
             android:inputType="numberDecimal" />
 
         <Spinner
             android:id="@+id/spinner_output"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:spinnerMode="dropdown" />
 
-        <EditText
+        <TextView
             android:id="@+id/txt_cash_output"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="numberDecimal" />
+            android:layout_height="41dp"
+            android:ems="20" />
 
         <Button
             android:id="@+id/btn_calc_cash"

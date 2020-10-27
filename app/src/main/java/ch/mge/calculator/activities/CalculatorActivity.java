@@ -84,9 +84,9 @@ public class CalculatorActivity extends AppCompatActivity {
 
     }
 
-    private void toastMessage(String msg){
+    /*private void toastMessage(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
+    }*/
 
     private void setNumberOnClickListener() {
         View.OnClickListener listener = new View.OnClickListener() {
