@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -32,6 +33,7 @@ public class CalculatorActivity extends AppCompatActivity {
     private boolean lastPoint;
     private boolean errorState;
     DatabaseHelper dbHelper;
+
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +41,34 @@ public class CalculatorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calculator);
         this.setTitle("Calculator");
         this.outputScreen = (TextView) findViewById(R.id.calc_output_screen);
+
         setNumberOnClickListener();
         setOperatorOnClickListener();
+
         dbHelper = new DatabaseHelper(this);
+
+        SharedPreferences sharedPreferences
+                = getSharedPreferences(
+                "sharedPrefs", MODE_PRIVATE);
+
+        final SharedPreferences.Editor editor
+                = sharedPreferences.edit();
+        final boolean isDarkModeOn
+                = sharedPreferences
+                .getBoolean(
+                        "isDarkModeOn", false);
+
+        if (isDarkModeOn) {
+            AppCompatDelegate
+                    .setDefaultNightMode(
+                            AppCompatDelegate
+                                    .MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate
+                    .setDefaultNightMode(
+                            AppCompatDelegate
+                                    .MODE_NIGHT_NO);
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -71,8 +98,21 @@ public class CalculatorActivity extends AppCompatActivity {
                 this.startActivity(pythagorasIntent);
                 return true;
             case R.id.action_darkmode:
-
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                SharedPreferences sharedPreferences
+                        = getSharedPreferences(
+                        "sharedPrefs", MODE_PRIVATE);
+                boolean isDarkModeOn = sharedPreferences.getBoolean("isDarkModeOn", false);
+                if (isDarkModeOn) {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    editor.putBoolean("isDarkModeOn", false);
+                    editor.apply();
+                } else {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    editor.putBoolean("isDarkModeOn", true);
+                    editor.apply();
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }

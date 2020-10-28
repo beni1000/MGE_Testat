@@ -1,6 +1,7 @@
 package ch.mge.calculator.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.calculator.R;
 
@@ -82,6 +84,22 @@ public class HistoryActivity extends AppCompatActivity {
                 Intent pythagorasIntent = new Intent(this, PythagorasActivity.class);
                 this.startActivity(pythagorasIntent);
                 return true;
+            case R.id.action_darkmode:
+                SharedPreferences sharedPreferences
+                        = getSharedPreferences(
+                        "sharedPrefs", MODE_PRIVATE);
+                boolean isDarkModeOn = sharedPreferences.getBoolean("isDarkModeOn", false);
+                if (isDarkModeOn) {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    editor.putBoolean("isDarkModeOn", false);
+                    editor.apply();
+                } else {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    editor.putBoolean("isDarkModeOn", true);
+                    editor.apply();
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
