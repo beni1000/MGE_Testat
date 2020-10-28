@@ -6,11 +6,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -56,7 +58,7 @@ public class ExchangeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        setCalcOnClickListener(btnCalc);
+        setCalcOnClickListener(btnCalc, inputCash);
     }
 
     @Override
@@ -90,8 +92,23 @@ public class ExchangeActivity extends AppCompatActivity {
         }
     }
 
-    private void setCalcOnClickListener(Button btn){
-
+    private void setCalcOnClickListener(Button btn, final EditText input){
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!input.getText().toString().isEmpty()){
+                        String to = currencySpinner.getSelectedItem().toString();
+                        double inputV = Double.valueOf(input.getText().toString());
+                        try{
+                            calcExchange(to, inputV);
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }else {
+                        Toast.makeText(ExchangeActivity.this, "Enter Value!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
     }
 
     public void getCurrencies() throws IOException {
@@ -136,6 +153,47 @@ public class ExchangeActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+    }
+
+    public void calcExchange(final String to, final double input) throws IOException{
+        String link = "https://api.exchangeratesapi.io/latest";
+        OkHttpClient client = new OkHttpClient();
+
+        Request req = new Request.Builder()
+                .url(link)
+                .header("Content-Type", "application/json")
+                .build();
+
+        client.newCall(req).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.w("Response:", e.getMessage().toString());
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                final String resp = response.body().string();
+                Log.d("waas git das us:", resp);
+                ExchangeActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            JSONObject objAll = new JSONObject(resp);
+                            JSONObject x = objAll.getJSONObject("rates");
+
+                            String toC = x.getString(to);
+                            String chf = x.getString("CHF");
+
+                            double result = input / Double.valueOf(chf) * Double.valueOf(toC);
+                            outputView.setText(String.valueOf(result));
+
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         });
     }

@@ -22,4 +22,5 @@
     <string name="lul">lul</string>
     <string name="button_clear_history">Clear History</string>
     <string name="btn_calc_cash">Calculate</string>
+    <string name="btn_pyth_calc">Calculate</string>
 </resources>
