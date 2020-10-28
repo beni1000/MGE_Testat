@@ -4,12 +4,15 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:background="@color/backgroundColor"
+        android:textColor="@color/textColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="20dp">
 
         <EditText
+            android:textColor="@color/textColor"
             android:id="@+id/txt_cash_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,18 +20,24 @@
             android:inputType="numberDecimal" />
 
         <Spinner
+            android:background="#DCDCDC"
+            android:textColor="@color/textColor"
             android:id="@+id/spinner_output"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:spinnerMode="dropdown" />
 
         <TextView
+            android:background="@color/backgroundColor"
+            android:textColor="@color/textColor"
             android:id="@+id/txt_cash_output"
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:ems="20" />
 
         <Button
+            android:background="@drawable/calc_buttons"
+            android:textColor="@color/textColor"
             android:id="@+id/btn_calc_cash"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

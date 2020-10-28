@@ -3,9 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:textColor="@color/textColor"
     android:padding="20dp">
 
     <ListView
+        android:background="#DCDCDC"
         android:id="@+id/history_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -22,6 +25,8 @@
             android:layout_height="wrap_content"
             android:text="@string/button_clear_history"
             android:textSize="30sp"
+            android:background="@drawable/calc_buttons"
+            android:textColor="@color/textColor"
             tools:textColor="#313435" />
 
 

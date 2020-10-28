@@ -21,4 +21,10 @@
         app:showAsAction="never"
         android:title="Pythagoras">
     </item>
+
+    <item
+        android:id="@+id/action_darkmode"
+        app:showAsAction="never"
+        android:title="Switch Mode">
+    </item>
 </menu>

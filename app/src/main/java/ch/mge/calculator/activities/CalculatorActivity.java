@@ -1,6 +1,7 @@
 package ch.mge.calculator.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import org.apache.commons.lang3.StringUtils;
 
 import com.example.calculator.R;
 
@@ -68,6 +70,9 @@ public class CalculatorActivity extends AppCompatActivity {
                 Intent pythagorasIntent = new Intent(this, PythagorasActivity.class);
                 this.startActivity(pythagorasIntent);
                 return true;
+            case R.id.action_darkmode:
+
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -84,9 +89,7 @@ public class CalculatorActivity extends AppCompatActivity {
 
     }
 
-    /*private void toastMessage(String msg){
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }*/
+
 
     private void setNumberOnClickListener() {
         View.OnClickListener listener = new View.OnClickListener() {
@@ -112,9 +115,19 @@ public class CalculatorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (lastNum && !errorState) {
                     Button button = (Button) v;
-                    outputScreen.append(button.getText());
-                    lastNum = false;
-                    lastPoint = false;
+                    if((button.getText()).equals("×")){
+                        outputScreen.append("*");
+                        lastNum = false;
+                        lastPoint = false;
+                    }else if ((button.getText()).equals("÷")){
+                        outputScreen.append("/");
+                        lastNum = false;
+                        lastPoint = false;
+                    }else{
+                        outputScreen.append(button.getText());
+                        lastNum = false;
+                        lastPoint = false;
+                    }
                 }
             }
         };
@@ -140,6 +153,54 @@ public class CalculatorActivity extends AppCompatActivity {
                 lastNum = false;
                 errorState = false;
                 lastPoint = false;
+            }
+        });
+        /*
+        findViewById(R.id.button_pl_mn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        */
+        findViewById(R.id.button_delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String screen = outputScreen.getText().toString();
+                if(!screen.isEmpty() && !errorState){
+                    String newLast;
+                    if(screen.length() > 1){
+                       newLast  = screen.substring(screen.length() - 2, screen.length() - 1);
+                    }else {
+                        newLast = "";
+                    }
+
+                    Log.d("New last logging", "onClick: " + newLast);
+                    String rest = screen.substring(0, screen.length() - 1);
+                    if(rest.isEmpty()){
+                        outputScreen.setText("");
+                        lastNum = false;
+                        errorState = false;
+                        lastPoint = false;
+                    }else if (StringUtils.isNumeric(newLast)){
+                        outputScreen.setText(rest);
+                        lastNum = true;
+                        errorState = false;
+                        lastPoint = false;
+                        Log.d("Teeeestinng", "onClick: nummber deleted ");
+                    }else if(newLast.equals("*") || newLast.equals("/") || newLast.equals("+") || newLast.equals("-")){
+                        outputScreen.setText(rest);
+                        lastNum = false;
+                        errorState = false;
+                        lastPoint = false;
+                    }else if(newLast.equals(".")){
+                        outputScreen.setText(rest);
+                        lastNum = false;
+                        errorState = false;
+                        lastPoint = true;
+                    }
+                }
+
             }
         });
 
@@ -171,3 +232,6 @@ public class CalculatorActivity extends AppCompatActivity {
     }
 
 }
+/*private void toastMessage(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }*/
